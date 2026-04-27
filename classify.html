@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>التصنيف الذكي — فرزك الذكي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== الهيدر ===== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="home page.html" class="logo">
+        <div class="logo-icon">♻️</div>
+        <span>فرزك الذكي</span>
+      </a>
+      <nav class="nav">
+        <a href="home page.html">الرئيسية</a>
+        <a href="classify.html" class="active">التصنيف</a>
+        <a href="locations.html">الاستلام والتسليم</a>
+        <a href="awareness.html">التوعية</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero bg-mesh-green">
+    <div class="badge">✨ مدعوم بالذكاء الاصطناعي</div>
+    <h1>تصنيف النفايات الذكي</h1>
+    <p>
+      ارفعي صورة للنفاية وسيقوم النظام بتحليلها وتحديد نوعها وأفضل طريقة
+      للتعامل معها خلال ثوانٍ.
+    </p>
+
+    <!-- شارة دقة النموذج -->
+    <div class="badge" style="background: var(--primary-light); border-color: var(--primary); color: var(--primary); margin-top: 1rem;">
+      <strong>دقة النموذج:</strong>
+      <span style="font-family: monospace; color: var(--foreground);">93%</span>
+      <span style="color: var(--muted); font-size: 0.75rem;">• EfficientNetV2B0 • 8,800 صورة تدريب</span>
+    </div>
+  </section>
+
+  <!-- ===== منطقة الرفع والنتيجة ===== -->
+  <section class="section bg-soft-gray">
+    <div class="container">
+      <div class="grid grid-2">
+
+        <!-- بطاقة الرفع -->
+        <div class="card">
+          <h2 style="font-size: 1.25rem; margin-bottom: 0.25rem;">📤 رفع الصورة</h2>
+          <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">
+            اختاري صورة واضحة للنفاية لتحليلها
+          </p>
+
+          <label class="upload-area" id="uploadArea">
+            <input type="file" id="imageInput" accept="image/*">
+            <div style="font-size: 3rem; margin-bottom: 0.5rem;">🖼️</div>
+            <p style="font-weight: 700;">اضغطي هنا لاختيار صورة</p>
+            <p style="font-size: 0.8rem; color: var(--muted);">JPG, PNG, WEBP — حتى 10 ميغابايت</p>
+          </label>
+
+          <div id="previewContainer" class="hidden mt-1">
+            <img id="imagePreview" alt="معاينة">
+            <button type="button" class="btn btn-primary btn-block mt-1" id="analyzeBtn">
+              ✨ تحليل الصورة
+            </button>
+            <button type="button" class="btn btn-secondary btn-block mt-1" id="resetBtn">
+              إزالة الصورة
+            </button>
+          </div>
+        </div>
+
+        <!-- بطاقة النتيجة -->
+        <div class="card">
+          <h2 style="font-size: 1.25rem; margin-bottom: 0.25rem;">♻️ نتيجة التحليل</h2>
+          <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">
+            سيظهر تصنيف النفاية ونصائح التعامل معها هنا
+          </p>
+
+          <div id="emptyState" class="text-center" style="padding: 3rem 0;">
+            <div style="font-size: 4rem; opacity: 0.3;">✨</div>
+            <p style="color: var(--muted); margin-top: 1rem;">في انتظار صورة لتحليلها</p>
+          </div>
+
+          <div id="loadingState" class="hidden text-center" style="padding: 3rem 0;">
+            <div style="font-size: 3rem;">⏳</div>
+            <p style="font-weight: 700; margin-top: 1rem;">يحلل النموذج صورتك...</p>
+            <p style="font-size: 0.9rem; color: var(--muted);">قد يستغرق ذلك بضع ثوانٍ</p>
+          </div>
+
+          <div id="errorState" class="hidden error-box">
+            <strong>⚠️ تعذّر التحليل</strong>
+            <p id="errorMessage" style="margin-top: 0.5rem; font-size: 0.9rem;"></p>
+          </div>
+
+          <div id="resultState" class="hidden">
+            <div class="result-box">
+              <div style="color: var(--primary); font-size: 0.75rem; font-weight: 700;">
+                ✅ تم التصنيف
+              </div>
+              <div class="result-category" id="resultCategory">—</div>
+              <div class="result-meta">
+                <div class="result-meta-item">
+                  <div class="result-meta-label">نسبة الثقة</div>
+                  <div class="result-meta-value" id="resultConfidence">—</div>
+                </div>
+                <div class="result-meta-item">
+                  <div class="result-meta-label">زمن التحليل</div>
+                  <div class="result-meta-value" id="resultTime">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div style="background: var(--accent); border-radius: 16px; padding: 1rem; margin-top: 1rem;">
+              <strong>💡 نصيحة للتعامل</strong>
+              <p style="margin-top: 0.5rem; font-size: 0.9rem;" id="resultTip"></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- الأنواع المدعومة -->
+      <div class="text-center mt-4">
+        <h3 style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1rem;">الأنواع المدعومة</h3>
+        <div class="types-list">
+          <span class="type-badge" style="background: #DBEAFE; color: #1E40AF;">بلاستيك</span>
+          <span class="type-badge" style="background: #FEF3C7; color: #92400E;">ورق</span>
+          <span class="type-badge" style="background: #CFFAFE; color: #155E75;">زجاج</span>
+          <span class="type-badge" style="background: #E2E8F0; color: #334155;">معدن</span>
+          <span class="type-badge" style="background: #FED7AA; color: #9A3412;">كرتون</span>
+          <span class="type-badge" style="background: #E5E7EB; color: #374151;">نفايات عامة</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== الفوتر ===== -->
+  <footer class="footer">
+    <p>حقوق مشروع فريق D — فرزك الذكي © 2026</p>
+  </footer>
+
+  <!-- ============================================================ -->
+  <!-- 🧠 كود JavaScript — اتصال بنموذج Flask + Ngrok               -->
+  <!-- ============================================================ -->
+  <script>
+    /* 🔧 رابط Flask + Ngrok — غيّريه عند تغيير رابط Ngrok */
+    const FLASK_API_URL = "https://energy-parakeet-clothing.ngrok-free.dev/predict";
+
+    /* ترجمة الفئات للعربية */
+    const CATEGORY_AR = {
+      plastic:   "بلاستيك",
+      paper:     "ورق",
+      glass:     "زجاج",
+      metal:     "معدن",
+      cardboard: "كرتون",
+      trash:     "نفايات عامة"
+    };
+
+    /* نصائح لكل نوع */
+    const TIPS_AR = {
+      plastic:   "اشطفي العبوة من بقايا الطعام، وأزيلي الغطاء، ثم ضعيها في حاوية البلاستيك المخصصة لإعادة التدوير.",
+      paper:     "تأكدي أن الورق نظيف وجاف، وأزيلي الدبابيس والأشرطة اللاصقة قبل وضعه في حاوية الورق.",
+      glass:     "اشطفي الزجاج جيدًا، وضعيه في الحاوية المخصصة دون كسره. المصابيح والمرايا لا تُعاد تدويرها هنا.",
+      metal:     "اغسلي العلب المعدنية من بقايا الشراب أو الطعام، واضغطي عليها لتوفير المساحة.",
+      cardboard: "افتحي علب الكرتون واطويها مسطحة قبل وضعها في الحاوية لتسهيل النقل وإعادة التدوير.",
+      trash:     "هذه نفاية عامة وغير قابلة لإعادة التدوير. ضعيها في حاوية النفايات العادية."
+    };
+
+    /* عناصر الصفحة */
+    const imageInput      = document.getElementById('imageInput');
+    const previewContainer = document.getElementById('previewContainer');
+    const imagePreview    = document.getElementById('imagePreview');
+    const uploadArea      = document.getElementById('uploadArea');
+    const analyzeBtn      = document.getElementById('analyzeBtn');
+    const resetBtn        = document.getElementById('resetBtn');
+    const emptyState      = document.getElementById('emptyState');
+    const loadingState    = document.getElementById('loadingState');
+    const errorState      = document.getElementById('errorState');
+    const resultState     = document.getElementById('resultState');
+    const errorMessage    = document.getElementById('errorMessage');
+    const resultCategory  = document.getElementById('resultCategory');
+    const resultConfidence = document.getElementById('resultConfidence');
+    const resultTime      = document.getElementById('resultTime');
+    const resultTip       = document.getElementById('resultTip');
+
+    let selectedFile = null;
+
+    /* عند اختيار صورة */
+    imageInput.addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (!file.type.startsWith('image/')) {
+        showError("يرجى اختيار ملف صورة صالح");
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        showError("حجم الصورة كبير جدًا. الحد الأقصى 10 ميغابايت.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        imagePreview.src = ev.target.result;
+        uploadArea.classList.add('hidden');
+        previewContainer.classList.remove('hidden');
+        selectedFile = file;
+        hideAllStates();
+        emptyState.classList.remove('hidden');
+      };
+      reader.readAsDataURL(file);
+    });
+
+    /* زر التحليل */
+    analyzeBtn.addEventListener('click', analyzeImage);
+
+    /* زر إزالة الصورة */
+    resetBtn.addEventListener('click', resetAll);
+
+    async function analyzeImage() {
+      if (!selectedFile) return;
+
+      hideAllStates();
+      loadingState.classList.remove('hidden');
+      analyzeBtn.disabled = true;
+
+      const startTime = Date.now();
+
+      try {
+        const formData = new FormData();
+        formData.append('image', selectedFile);
+
+        const response = await fetch(FLASK_API_URL, {
+          method: 'POST',
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+          body: formData
+        });
+
+        if (!response.ok) {
+          throw new Error(`فشل الاتصال بالخادم (رمز ${response.status})`);
+        }
+
+        const data = await response.json();
+        const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+
+        const key = (data.prediction || '').toLowerCase();
+        const arabicCategory = CATEGORY_AR[key] || data.prediction;
+        const tip = TIPS_AR[key] || "";
+        const confidence = Math.round(data.confidence || 0);
+
+        resultCategory.textContent = arabicCategory;
+        resultConfidence.textContent = confidence + '%';
+        resultTime.textContent = elapsed + ' ث';
+        resultTip.textContent = tip;
+
+        hideAllStates();
+        resultState.classList.remove('hidden');
+
+        /* حفظ النتيجة في قاعدة البيانات (اختياري) */
+        savePrediction(data.prediction, confidence);
+
+      } catch (err) {
+        showError(err.message + ". تأكدي أن خادم Flask و Ngrok يعملان على جهازك.");
+      } finally {
+        analyzeBtn.disabled = false;
+      }
+    }
+
+    function showError(msg) {
+      hideAllStates();
+      errorMessage.textContent = msg;
+      errorState.classList.remove('hidden');
+    }
+
+    function hideAllStates() {
+      emptyState.classList.add('hidden');
+      loadingState.classList.add('hidden');
+      errorState.classList.add('hidden');
+      resultState.classList.add('hidden');
+    }
+
+    function resetAll() {
+      selectedFile = null;
+      imageInput.value = '';
+      imagePreview.src = '';
+      previewContainer.classList.add('hidden');
+      uploadArea.classList.remove('hidden');
+      hideAllStates();
+      emptyState.classList.remove('hidden');
+    }
+
+    /* حفظ في قاعدة البيانات MySQL عبر PHP */
+    function savePrediction(category, confidence) {
+      fetch('save_prediction.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `category=${encodeURIComponent(category)}&confidence=${confidence}`
+      }).catch(() => {
+        /* تجاهل الأخطاء — الحفظ اختياري */
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>فرزك الذكي — منصة فرز النفايات بالذكاء الاصطناعي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== الهيدر ===== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="home page.html" class="logo">
+        <div class="logo-icon">♻️</div>
+        <span>فرزك الذكي</span>
+      </a>
+      <nav class="nav">
+        <a href="home page.html" class="active">الرئيسية</a>
+        <a href="classification.html">التصنيف</a>
+        <a href="locations.html">الاستلام والتسليم</a>
+        <a href="awareness.html">التوعية</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero bg-mesh-green">
+    <div class="badge">✨ منصة ذكية لفرز النفايات</div>
+    <h1>
+      فرّز نفاياتك بذكاء<br>
+      <span class="text-primary">واحمي بيئتك</span> ♻️
+    </h1>
+    <p>
+      منصة ذكية تعتمد على تقنيات الذكاء الاصطناعي لمساعدتك في تصنيف
+      النفايات بسرعة ودقة، والمساهمة في دعم الاستدامة البيئية
+    </p>
+    <div class="btn-group">
+      <a href="classification.html" class="btn btn-primary">ابدأ الفرز ←</a>
+      <a href="awareness.html" class="btn btn-secondary">تعرّف أكثر</a>
+    </div>
+  </section>
+
+  <!-- ===== عن المشروع + رؤية 2030 ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-2" style="align-items: center;">
+        <div>
+          <div class="badge" style="background: var(--primary-light); color: var(--primary);">
+            🌿 عن المشروع
+          </div>
+          <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem;">
+            نحو بيئة أنظف بمساعدة الذكاء الاصطناعي
+          </h2>
+          <p style="color: var(--muted); font-size: 1.05rem;">
+            يهدف هذا المشروع إلى معالجة مشكلة صعوبة فرز النفايات من خلال تطوير
+            نظام ذكي يعتمد على تقنيات التعلم العميق لتصنيف النفايات بشكل دقيق
+            وسريع. يساهم النظام في تحسين كفاءة إعادة التدوير ودعم الجهود
+            البيئية بما يتماشى مع رؤية المملكة 2030.
+          </p>
+        </div>
+        <div>
+          <img src="assets/vision.jpg" alt="رؤية المملكة 2030"
+               style="border-radius: 32px; box-shadow: var(--shadow-lg);">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== الإحصائيات ===== -->
+  <section class="section bg-soft-gray">
+    <div class="container">
+      <div class="text-center mb-2">
+        <div class="badge">⚡ الإحصائيات</div>
+        <h2 style="font-size: 2.5rem; font-weight: 900;">أداء النظام</h2>
+        <p style="color: var(--muted);">أرقام تعكس دقة وسرعة الذكاء الاصطناعي في خدمة البيئة</p>
+      </div>
+
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="card-icon">🎯</div>
+          <div class="stat-value">93%</div>
+          <div class="stat-label">دقة النموذج</div>
+          <div class="stat-note">EfficientNetV2B0 — تحقّق على 503 صورة</div>
+        </div>
+        <div class="card">
+          <div class="card-icon" style="background: var(--accent); color: var(--foreground);">📚</div>
+          <div class="stat-value">6</div>
+          <div class="stat-label">أنواع النفايات المدعومة</div>
+          <div class="stat-note">كرتون، زجاج، معدن، ورق، بلاستيك، عام</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="stat-value">2 ث</div>
+          <div class="stat-label">متوسط زمن التحليل</div>
+          <div class="stat-note">بمعالجة الصورة 224×224</div>
+        </div>
+      </div>
+
+      <p class="text-center mt-2" style="font-size: 0.8rem; color: var(--muted); max-width: 700px; margin-left: auto; margin-right: auto;">
+        * تم تدريب النموذج على بيانات مدمجة من قاعدتي بيانات
+        <a href="https://github.com/garythung/trashnet" target="_blank" style="color: var(--primary);">TrashNet</a>
+        و
+        <a href="https://www.kaggle.com/datasets/mostafaabla/garbage-classification" target="_blank" style="color: var(--primary);">Garbage Classification (Kaggle)</a>
+        — إجمالي ≈ 8,800 صورة.
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== من نحن (فريق D) ===== -->
+  <section class="section">
+    <div class="container-sm">
+      <div class="bg-mesh-green" style="border-radius: 40px; padding: 4rem 2rem; text-align: center; border: 1px solid var(--border);">
+        <div style="width: 80px; height: 80px; background: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; margin: 0 auto 1.5rem; box-shadow: var(--shadow);">
+          🎓
+        </div>
+        <div class="badge" style="background: rgba(255,255,255,0.7);">من نحن</div>
+        <h2 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 1.5rem;">
+          فريق طالبات علوم الحاسب<br>
+          <span class="text-primary">جامعة تبوك</span>
+        </h2>
+        <p style="font-size: 1.1rem; color: var(--foreground); opacity: 0.8;">
+          نحن فريق من طالبات قسم علوم الحاسب بجامعة تبوك، نعمل على تطوير
+          نظام ذكي لتصنيف النفايات باستخدام تقنيات التعلم العميق، بهدف
+          تحسين كفاءة عمليات الفرز ودعم الاستدامة البيئية.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== الفوتر ===== -->
+  <footer class="footer">
+    <p>حقوق مشروع فريق D — فرزك الذكي © 2026</p>
+  </footer>
+
+</body>
+</html>

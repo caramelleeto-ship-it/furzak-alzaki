@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>الاستلام والتسليم — فرزك الذكي</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===== الهيدر ===== -->
+  <header class="header">
+    <div class="header-container">
+      <a href="home page.html" class="logo">
+        <div class="logo-icon">♻️</div>
+        <span>فرزك الذكي</span>
+      </a>
+      <nav class="nav">
+        <a href="home page.html">الرئيسية</a>
+        <a href="classify.html">التصنيف</a>
+        <a href="locations.html" class="active">الاستلام والتسليم</a>
+        <a href="awareness.html">التوعية</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Hero ===== -->
+  <section class="hero bg-mesh-green">
+    <div class="badge">📍 مواقع وخدمات قريبة منك</div>
+    <h1>الاستلام والتسليم</h1>
+    <p>
+      اختاري الطريقة الأنسب لك: سلّمي نفاياتك بنفسك إلى أقرب مركز،
+      أو اطلبي خدمة الاستلام لتأتي إليكِ.
+    </p>
+  </section>
+
+  <!-- ===== المحتوى ===== -->
+  <section class="section bg-soft-gray">
+    <div class="container">
+
+      <!-- التبويبات -->
+      <div class="tabs">
+        <button class="tab active" id="tabDelivery" onclick="switchTab('delivery')">
+          <h3>📦 خانة التسليم</h3>
+          <p>مراكز ونقاط فرز تستقبل نفاياتك القابلة لإعادة التدوير حين تسلّمينها بنفسك.</p>
+        </button>
+        <button class="tab" id="tabPickup" onclick="switchTab('pickup')">
+          <h3>🚚 خانة الاستلام</h3>
+          <p>خدمات تأتي إلى منزلك أو مكان عملك لاستلام النفايات القابلة لإعادة التدوير.</p>
+        </button>
+      </div>
+
+      <!-- البحث وإضافة مركز -->
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="🔍 ابحثي بالاسم أو الحي أو نوع النفاية..." oninput="filterLocations()">
+        <button class="btn btn-primary" id="toggleFormBtn" onclick="toggleForm()">
+          ➕ إضافة مركز
+        </button>
+      </div>
+
+      <!-- نموذج إضافة مركز -->
+      <div id="addForm" class="card hidden mb-2">
+        <h2 style="font-size: 1.25rem; margin-bottom: 0.25rem;">إضافة مركز جديد</h2>
+        <p style="font-size: 0.9rem; color: var(--muted); margin-bottom: 1.5rem;">
+          ساهمي في توسيع شبكتنا. سيتم مراجعة المعلومات قبل النشر.
+        </p>
+
+        <form id="centerForm" onsubmit="submitForm(event)">
+          <div class="form-section">
+            <h3>📍 معلومات المكان</h3>
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label>اسم المركز <span style="color:var(--destructive);">*</span></label>
+                <input type="text" name="centerName" required placeholder="اكتبي اسم المركز">
+              </div>
+              <div class="form-group">
+                <label>الحي <span style="color:var(--destructive);">*</span></label>
+                <input type="text" name="district" required placeholder="مثال: حي الورود">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>نوع النفايات المقبولة <span style="color:var(--destructive);">*</span></label>
+              <input type="text" name="acceptedTypes" required placeholder="بلاستيك، ورق، زجاج...">
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>⏰ أوقات العمل</h3>
+            <div class="grid grid-2">
+              <div class="form-group">
+                <label>أيام العمل <span style="color:var(--destructive);">*</span></label>
+                <input type="text" name="workDays" required placeholder="السبت - الخميس">
+              </div>
+              <div class="form-group">
+                <label>ساعات العمل <span style="color:var(--destructive);">*</span></label>
+                <input type="text" name="workHours" required placeholder="8 ص - 5 م">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-section" style="border-bottom: none;">
+            <h3>📞 التواصل</h3>
+            <div class="form-group">
+              <label>رقم الهاتف (اختياري)</label>
+              <input type="tel" name="phone" placeholder="05xxxxxxxx">
+            </div>
+          </div>
+
+          <div class="btn-group" style="margin-top: 1rem;">
+            <button type="submit" class="btn btn-primary">إرسال المعلومات</button>
+            <button type="button" class="btn btn-secondary" onclick="toggleForm()">إلغاء</button>
+          </div>
+        </form>
+
+        <!-- رسالة النجاح -->
+        <div id="formSuccess" class="hidden success-box mt-1">
+          <strong>✅ تم استلام المعلومات بنجاح</strong>
+          <p style="margin-top: 0.5rem;">شكرًا لمساهمتك في حماية البيئة</p>
+        </div>
+      </div>
+
+      <!-- قائمة مراكز التسليم -->
+      <div id="deliveryList" class="grid grid-2">
+
+        <div class="location-card" data-search="مركز تبوك للتدوير البيئي حي الورود بلاستيك ورق كرتون معدن">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">♻️ مركز تبوك للتدوير البيئي</h3>
+          <div class="location-info">
+            <div>📍 حي الورود، طريق الملك خالد، تبوك</div>
+            <div>⏰ السبت - الخميس: 8 ص - 9 م</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 14 422 0000</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">كرتون</span>
+            <span class="accept-tag">معدن</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="نقطة جامعة تبوك للفرز الحرم الجامعي ورق بلاستيك زجاج">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">♻️ نقطة جامعة تبوك للفرز</h3>
+          <div class="location-info">
+            <div>📍 جامعة تبوك، الحرم الجامعي، الفناء الرئيسي</div>
+            <div>⏰ الأحد - الخميس: 8 ص - 4 م</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">زجاج</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="حاويات الفرز أمانة منطقة تبوك حي السلام بلاستيك ورق زجاج معدن">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">♻️ حاويات الفرز - أمانة منطقة تبوك</h3>
+          <div class="location-info">
+            <div>📍 حي السلام، شارع الأمير فهد بن سلطان، تبوك</div>
+            <div>⏰ خدمة 24 ساعة</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 14 421 1111</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">زجاج</span>
+            <span class="accept-tag">معدن</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="نقطة فرز مول الحكير حي المروج بلاستيك ورق كرتون">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">♻️ نقطة فرز - مول الحكير تبوك</h3>
+          <div class="location-info">
+            <div>📍 حي المروج، طريق الملك فهد، تبوك</div>
+            <div>⏰ يوميًا: 9 ص - 12 ص</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">كرتون</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="مركز فرز حي العزيزية شارع المنصور بلاستيك كرتون معدن">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">♻️ مركز فرز حي العزيزية</h3>
+          <div class="location-info">
+            <div>📍 حي العزيزية، شارع المنصور، تبوك</div>
+            <div>⏰ السبت - الخميس: 7 ص - 10 م</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 14 425 3300</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">كرتون</span>
+            <span class="accept-tag">معدن</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- قائمة مراكز الاستلام -->
+      <div id="pickupList" class="grid grid-2 hidden">
+
+        <div class="location-card" data-search="خدمة استلام تبوك المنزلية كل الأحياء بلاستيك ورق كرتون معدن">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">🚚 خدمة استلام تبوك المنزلية</h3>
+          <div class="location-info">
+            <div>📍 تغطية كامل أحياء تبوك</div>
+            <div>⏰ السبت - الخميس: 9 ص - 6 م</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 50 100 2030</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">كرتون</span>
+            <span class="accept-tag">معدن</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="خدمة الاستلام شمال تبوك المروج الورود السلام بلاستيك ورق زجاج">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">🚚 خدمة الاستلام - شمال تبوك</h3>
+          <div class="location-info">
+            <div>📍 أحياء: المروج، الورود، السلام</div>
+            <div>⏰ السبت - الخميس: 10 ص - 7 م</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 55 200 4040</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">بلاستيك</span>
+            <span class="accept-tag">ورق</span>
+            <span class="accept-tag">زجاج</span>
+          </div>
+        </div>
+
+        <div class="location-card" data-search="خدمة الاستلام جنوب تبوك العزيزية المصيف الخالدية كرتون معدن بلاستيك">
+          <span class="location-city">تبوك</span>
+          <h3 class="location-name">🚚 خدمة الاستلام - جنوب تبوك</h3>
+          <div class="location-info">
+            <div>📍 أحياء: العزيزية، المصيف، الخالدية</div>
+            <div>⏰ الأحد - الخميس: 8 ص - 5 م</div>
+            <div dir="ltr" style="text-align: right;">📞 +966 56 311 7700</div>
+          </div>
+          <div class="location-accepts">
+            <span class="accept-tag">كرتون</span>
+            <span class="accept-tag">معدن</span>
+            <span class="accept-tag">بلاستيك</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== الفوتر ===== -->
+  <footer class="footer">
+    <p>حقوق مشروع فريق D — فرزك الذكي © 2026</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
